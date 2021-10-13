@@ -1,0 +1,16 @@
+{
+  "source": "Unity",
+  "applications": [
+    {
+      "app_key": "application.generated.unity.multiplayertemplate.exe",
+      "launch_type": "url",
+      "url": "steam://launch/",
+      "action_manifest_path": "C:\\Users\\demo\\Downloads\\Multiplayer-Template-disable\\Virtual_Reality_Multiplayer_Framework\\Assets\\StreamingAssets\\SteamVR\\actions.json",
+      "strings": {
+        "en_us": {
+          "name": "Multiplayer Template [Testing]"
+        }
+      }
+    }
+  ]
+}
