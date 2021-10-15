@@ -91,9 +91,13 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player
         PhotonNetwork.Destroy(networkedPlayerRightHand);
     }
 
-    [PunRPC]
-    public void DestroyNetworkedRepresentation()
+    /// <summary>
+    /// Destroys the networked representations of each object in the case that the application quits.
+    /// Needs to be done, since OnDestroy is called after OnApplicationQuit, and Photon is disconnected in OnApplicationQuit
+    /// </summary>
+    private void OnApplicationQuit()
     {
+        Debug.Log("NetworkedPlayer::OnApplicationQuit()");
         PhotonNetwork.Destroy(networkedPlayerHead);
         PhotonNetwork.Destroy(networkedPlayerLeftHand);
         PhotonNetwork.Destroy(networkedPlayerRightHand);
