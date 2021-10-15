@@ -81,9 +81,9 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player
     private void OnDestroy()
     {
         Debug.Log("NetworkedPlayer::OnDestroy()");
-        PhotonNetwork.Destroy(networkedPlayerHead); 
-        PhotonNetwork.Destroy(networkedPlayerLeftHand);
-        PhotonNetwork.Destroy(networkedPlayerRightHand);
+        Destroy(networkedPlayerHead); 
+        Destroy(networkedPlayerLeftHand);
+        Destroy(networkedPlayerRightHand);
     }
 
     [PunRPC]
