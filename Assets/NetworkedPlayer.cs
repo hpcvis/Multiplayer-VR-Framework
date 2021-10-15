@@ -17,11 +17,15 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player
     public Transform cameraTransform;
     public Transform leftHandTransform;
     public Transform rightHandTransform;
+    public Animator leftHandAnimator;
+    public Animator rightHandAnimator;
 
     // public for debug purposes
     public GameObject networkedPlayerHead;
     public GameObject networkedPlayerLeftHand;
+    public Animator networkedPlayerLeftHandAnimator;
     public GameObject networkedPlayerRightHand;
+    public Animator networkedPlayerRightHandAnimator;
 
     /// <summary>
     /// Instantates network representations of the player (head, hands)
@@ -41,6 +45,18 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player
             remotePlayerRightHandPrefab.name,
             rightHandTransform.position,
             rightHandTransform.rotation);
+
+        networkedPlayerLeftHandAnimator = networkedPlayerLeftHand.GetComponentInChildren<Animator>();
+        networkedPlayerRightHandAnimator = networkedPlayerRightHand.GetComponentInChildren<Animator>();
+
+        if (networkedPlayerLeftHand.GetComponent<PhotonView>().IsMine)
+        {
+            networkedPlayerLeftHand.SetActive(false);
+        }
+        if (networkedPlayerRightHand.GetComponent<PhotonView>().IsMine)
+        {
+            networkedPlayerRightHand.SetActive(false);
+        }
     }
 
     /// <summary>
@@ -57,10 +73,20 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player
         if (networkedPlayerLeftHand)
         {
             SyncNetworkComponent(networkedPlayerLeftHand, leftHandTransform);
+            //Animator anim = GetComponentInChildren<Animator>();
+            //Animator animNetwork = networkedPlayerLeftHand.GetComponentInChildren<Animator>();
+            //bool grabbing = anim.GetBool("IsGrabbing");
+            //animNetwork.SetBool("IsGrabbing", grabbing);
+            networkedPlayerLeftHandAnimator.SetBool(
+                "IsGrabbing",
+                leftHandAnimator.GetBool("IsGrabbing"));
         }
         if (networkedPlayerRightHand)
         {
             SyncNetworkComponent(networkedPlayerRightHand, rightHandTransform);
+            networkedPlayerRightHandAnimator.SetBool(
+                "IsGrabbing",
+                rightHandAnimator.GetBool("IsGrabbing"));
         }
 
         if (Input.GetKeyDown(KeyCode.K))
