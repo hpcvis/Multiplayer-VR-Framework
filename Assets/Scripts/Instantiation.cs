@@ -108,7 +108,7 @@ public class Instantiation : MonoBehaviourPunCallbacks, IInRoomCallbacks
             //PhotonNetwork.Instantiate(remotePlayerPrefab.name,
             //    spawnLocation.GetComponent<Transform>().position,
             //    spawnLocation.GetComponent<Transform>().rotation);
-            GameObject localPlayer = PhotonNetwork.Instantiate(networkedPlayerPrefab.name, Vector3.zero, Quaternion.identity);
+            GameObject localPlayer = Instantiate(networkedPlayerPrefab);
             PlayerManager.inst.LocalPlayerInstance = localPlayer;
         }
         else
@@ -142,7 +142,7 @@ public class Instantiation : MonoBehaviourPunCallbacks, IInRoomCallbacks
                     //    spawnLocation.GetComponent<Transform>().position,
                     //    spawnLocation.GetComponent<Transform>().rotation);
                     //GameObject localPlayer = Instantiate(networkedPlayerPrefab);
-                    GameObject localPlayer = PhotonNetwork.Instantiate(networkedPlayerPrefab.name, Vector3.zero, Quaternion.identity);
+                    GameObject localPlayer = Instantiate(networkedPlayerPrefab);
                     PlayerManager.inst.LocalPlayerInstance = localPlayer;
                     this.photonView.RPC("RPC_SpawnpointUsed", RpcTarget.AllBuffered, spawnPointIndex);
                     break; //We have found the correct spawnpoint index

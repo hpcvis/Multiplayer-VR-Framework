@@ -62,6 +62,11 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player
         {
             SyncNetworkComponent(networkedPlayerRightHand, rightHandTransform);
         }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     /// <summary>
@@ -81,9 +86,9 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player
     private void OnDestroy()
     {
         Debug.Log("NetworkedPlayer::OnDestroy()");
-        Destroy(networkedPlayerHead); 
-        Destroy(networkedPlayerLeftHand);
-        Destroy(networkedPlayerRightHand);
+        PhotonNetwork.Destroy(networkedPlayerHead);
+        PhotonNetwork.Destroy(networkedPlayerLeftHand);
+        PhotonNetwork.Destroy(networkedPlayerRightHand);
     }
 
     [PunRPC]
