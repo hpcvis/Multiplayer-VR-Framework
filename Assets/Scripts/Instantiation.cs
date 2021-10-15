@@ -102,14 +102,14 @@ public class Instantiation : MonoBehaviourPunCallbacks, IInRoomCallbacks
             //If you don't mark oneSpawnPoint while there only exists one spawnpoint, it'll be fine, it'll just have a little more overhead
             GameObject spawnLocation;
             spawnLocation = GameObject.FindGameObjectWithTag("SpawnPoint");
-            //PhotonNetwork.Instantiate(playerPrefab.name,
-            //    spawnLocation.GetComponent<Transform>().position,
-            //    spawnLocation.GetComponent<Transform>().rotation);
+            PhotonNetwork.Instantiate(playerPrefab.name,
+                spawnLocation.GetComponent<Transform>().position,
+                spawnLocation.GetComponent<Transform>().rotation);
             //PhotonNetwork.Instantiate(remotePlayerPrefab.name,
             //    spawnLocation.GetComponent<Transform>().position,
             //    spawnLocation.GetComponent<Transform>().rotation);
-            GameObject localPlayer = Instantiate(networkedPlayerPrefab);
-            PlayerManager.inst.LocalPlayerInstance = localPlayer;
+            //GameObject localPlayer = PhotonNetwork.Instantiate(networkedPlayerPrefab.name, Vector3.zero, Quaternion.identity);
+            //PlayerManager.inst.LocalPlayerInstance = localPlayer;
         }
         else
         {
@@ -135,14 +135,15 @@ public class Instantiation : MonoBehaviourPunCallbacks, IInRoomCallbacks
             {
                 if (spawnLocation.GetComponent<SpawnPointHelper>().spawnPointIndex == spawnPointIndex)
                 {
-                    //PhotonNetwork.Instantiate(playerPrefab.name,
-                    //    spawnLocation.GetComponent<Transform>().position,
-                    //    spawnLocation.GetComponent<Transform>().rotation);
+                    PhotonNetwork.Instantiate(playerPrefab.name,
+                        spawnLocation.GetComponent<Transform>().position,
+                        spawnLocation.GetComponent<Transform>().rotation);
                     //PhotonNetwork.Instantiate(remotePlayerPrefab.name,
                     //    spawnLocation.GetComponent<Transform>().position,
                     //    spawnLocation.GetComponent<Transform>().rotation);
-                    GameObject localPlayer = Instantiate(networkedPlayerPrefab);
-                    PlayerManager.inst.LocalPlayerInstance = localPlayer;
+                    //GameObject localPlayer = Instantiate(networkedPlayerPrefab);
+                    //GameObject localPlayer = PhotonNetwork.Instantiate(networkedPlayerPrefab.name, Vector3.zero, Quaternion.identity);
+                    //PlayerManager.inst.LocalPlayerInstance = localPlayer;
                     this.photonView.RPC("RPC_SpawnpointUsed", RpcTarget.AllBuffered, spawnPointIndex);
                     break; //We have found the correct spawnpoint index
                 }

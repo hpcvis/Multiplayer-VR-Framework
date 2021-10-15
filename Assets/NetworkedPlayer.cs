@@ -85,4 +85,12 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player
         PhotonNetwork.Destroy(networkedPlayerLeftHand);
         PhotonNetwork.Destroy(networkedPlayerRightHand);
     }
+
+    [PunRPC]
+    public void DestroyNetworkedRepresentation()
+    {
+        PhotonNetwork.Destroy(networkedPlayerHead);
+        PhotonNetwork.Destroy(networkedPlayerLeftHand);
+        PhotonNetwork.Destroy(networkedPlayerRightHand);
+    }
 }
