@@ -962,6 +962,11 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: b20a3cfd37d0b22428fdcc8656053aad, type: 2}
+    - target: {fileID: -6057140222963153312, guid: c8d02f21af5347b4fa82fac8de3dfd0a,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -4651492255982121838, guid: c8d02f21af5347b4fa82fac8de3dfd0a,
         type: 3}
       propertyPath: m_LocalRotation.x
@@ -986,6 +991,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4374303570455858166, guid: c8d02f21af5347b4fa82fac8de3dfd0a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: c8d02f21af5347b4fa82fac8de3dfd0a,
         type: 3}
@@ -1061,6 +1071,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: LeftHandSkinnedMesh
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: c8d02f21af5347b4fa82fac8de3dfd0a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1593516578532176214, guid: c8d02f21af5347b4fa82fac8de3dfd0a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5916569502537782022, guid: c8d02f21af5347b4fa82fac8de3dfd0a,
         type: 3}

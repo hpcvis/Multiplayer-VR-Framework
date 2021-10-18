@@ -52,19 +52,11 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player
         if (networkedPlayerLeftHand.GetComponent<PhotonView>().IsMine)
         {
             // TODO: needs to disable the child components (the rendered mesh), not the whole hand component
-            //networkedPlayerLeftHand.SetActive(false);
-            for (int i = 0; i < networkedPlayerLeftHand.transform.childCount; i++)
-            {
-                networkedPlayerLeftHand.transform.GetChild(i).gameObject.SetActive(false);
-            }
+            networkedPlayerLeftHand.GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
         }
         if (networkedPlayerRightHand.GetComponent<PhotonView>().IsMine)
         {
-            //networkedPlayerRightHand.SetActive(false);
-            for (int i = 0; i < networkedPlayerRightHand.transform.childCount; i++)
-            {
-                networkedPlayerRightHand.transform.GetChild(i).gameObject.SetActive(false);
-            }
+            networkedPlayerRightHand.GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
         }
     }
 
