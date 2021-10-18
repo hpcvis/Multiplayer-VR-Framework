@@ -12,20 +12,27 @@ using UnityEngine;
 public class NetworkedPlayer : Valve.VR.InteractionSystem.Player
 {
     public GameObject remotePlayerHeadPrefab;
-    public GameObject remotePlayerLeftHandPrefab;
-    public GameObject remotePlayerRightHandPrefab;
+    //public GameObject remotePlayerLeftHandPrefab;
+    //public GameObject remotePlayerRightHandPrefab;
+    public GameObject remotePlayerHandPrefab;
     public Transform cameraTransform;
-    public Transform leftHandTransform;
-    public Transform rightHandTransform;
-    public Animator leftHandAnimator;
-    public Animator rightHandAnimator;
+    //public Transform leftHandTransform;
+    //public Transform rightHandTransform;
+    //public Animator leftHandAnimator;
+    //public Animator rightHandAnimator;
+
+    public Transform[] handTransforms;
+    public Animator[] handAnimators;
 
     // public for debug purposes
     public GameObject networkedPlayerHead;
-    public GameObject networkedPlayerLeftHand;
-    public Animator networkedPlayerLeftHandAnimator;
-    public GameObject networkedPlayerRightHand;
-    public Animator networkedPlayerRightHandAnimator;
+    //public GameObject networkedPlayerLeftHand;
+    //public Animator networkedPlayerLeftHandAnimator;
+    //public GameObject networkedPlayerRightHand;
+    //public Animator networkedPlayerRightHandAnimator;
+
+    public GameObject[] networkedHands;
+    public Animator[] networkedHandAnimators;
 
     /// <summary>
     /// Instantates network representations of the player (head, hands)
@@ -37,26 +44,50 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player
             remotePlayerHeadPrefab.name,
             cameraTransform.position,
             cameraTransform.rotation);
-        networkedPlayerLeftHand = PhotonNetwork.Instantiate(
-            remotePlayerLeftHandPrefab.name,
-            leftHandTransform.position,
-            leftHandTransform.rotation);
-        networkedPlayerRightHand = PhotonNetwork.Instantiate(
-            remotePlayerRightHandPrefab.name,
-            rightHandTransform.position,
-            rightHandTransform.rotation);
+        networkedHands = new GameObject[2];
+        networkedHandAnimators = new Animator[2];
 
-        networkedPlayerLeftHandAnimator = networkedPlayerLeftHand.GetComponentInChildren<Animator>();
-        networkedPlayerRightHandAnimator = networkedPlayerRightHand.GetComponentInChildren<Animator>();
+        // 0 => left hand
+        // 1 => right hand
+        for (int i = 0; i < networkedHands.Length; i++)
+        {
+            networkedHands[i] = PhotonNetwork.Instantiate(
+                remotePlayerHandPrefab.name,
+                handTransforms[i].position,
+                handTransforms[i].rotation);
+            networkedHandAnimators[i] = networkedHands[i].GetComponentInChildren<Animator>();
 
-        if (networkedPlayerLeftHand.GetComponent<PhotonView>().IsMine)
-        {
-            networkedPlayerLeftHand.GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
+            // disable the mesh of the networked player instance locally, since there are SteamVR hands to render
+            if (networkedHands[i].GetComponent<PhotonView>().IsMine)
+            {
+                networkedHands[i].GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
+            }
         }
-        if (networkedPlayerRightHand.GetComponent<PhotonView>().IsMine)
-        {
-            networkedPlayerRightHand.GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
-        }
+        // flip the model of the right hand so it looks like a right hand
+        Vector3 rightHandScale = networkedHands[1].transform.localScale;
+        rightHandScale.x *= -1;
+        networkedHands[1].transform.localScale = rightHandScale;
+
+        //networkedPlayerLeftHand = PhotonNetwork.Instantiate(
+        //    remotePlayerLeftHandPrefab.name,
+        //    leftHandTransform.position,
+        //    leftHandTransform.rotation);
+        //networkedPlayerRightHand = PhotonNetwork.Instantiate(
+        //    remotePlayerRightHandPrefab.name,
+        //    rightHandTransform.position,
+        //    rightHandTransform.rotation);
+
+        //networkedPlayerLeftHandAnimator = networkedPlayerLeftHand.GetComponentInChildren<Animator>();
+        //networkedPlayerRightHandAnimator = networkedPlayerRightHand.GetComponentInChildren<Animator>();
+
+        //if (networkedPlayerLeftHand.GetComponent<PhotonView>().IsMine)
+        //{
+        //    networkedPlayerLeftHand.GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
+        //}
+        //if (networkedPlayerRightHand.GetComponent<PhotonView>().IsMine)
+        //{
+        //    networkedPlayerRightHand.GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
+        //}
     }
 
     /// <summary>
@@ -68,22 +99,27 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player
 
         if (networkedPlayerHead)
         {
-            SyncNetworkComponent(networkedPlayerHead, cameraTransform);
+            SyncNetworkTransform(networkedPlayerHead, cameraTransform);
         }
-        if (networkedPlayerLeftHand)
+        for (int i = 0; i < networkedHands.Length; i++)
         {
-            SyncNetworkComponent(networkedPlayerLeftHand, leftHandTransform);
-            networkedPlayerLeftHandAnimator.SetBool(
-                "IsGrabbing",
-                leftHandAnimator.GetBool("IsGrabbing"));
+            SyncNetworkTransform(networkedHands[i], handTransforms[i]);
+            SyncNetworkHandAnimations(networkedHandAnimators[i], handAnimators[i]);
         }
-        if (networkedPlayerRightHand)
-        {
-            SyncNetworkComponent(networkedPlayerRightHand, rightHandTransform);
-            networkedPlayerRightHandAnimator.SetBool(
-                "IsGrabbing",
-                rightHandAnimator.GetBool("IsGrabbing"));
-        }
+        //if (networkedPlayerLeftHand)
+        //{
+        //    SyncNetworkTransform(networkedPlayerLeftHand, leftHandTransform);
+        //    networkedPlayerLeftHandAnimator.SetBool(
+        //        "IsGrabbing",
+        //        leftHandAnimator.GetBool("IsGrabbing"));
+        //}
+        //if (networkedPlayerRightHand)
+        //{
+        //    SyncNetworkTransform(networkedPlayerRightHand, rightHandTransform);
+        //    networkedPlayerRightHandAnimator.SetBool(
+        //        "IsGrabbing",
+        //        rightHandAnimator.GetBool("IsGrabbing"));
+        //}
 
         if (Input.GetKeyDown(KeyCode.K))
         {
@@ -96,10 +132,15 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player
     /// </summary>
     /// <param name="networkRepresentation"></param>
     /// <param name="sourceTransform"></param>
-    private void SyncNetworkComponent(GameObject networkRepresentation, Transform sourceTransform)
+    private void SyncNetworkTransform(GameObject networkRepresentation, Transform sourceTransform)
     {
         networkRepresentation.transform.position = sourceTransform.position;
         networkRepresentation.transform.rotation = sourceTransform.rotation;
+    }
+
+    private void SyncNetworkHandAnimations(Animator networkedHand, Animator sourceHand)
+    {
+        networkedHand.SetBool("IsGrabbing", sourceHand.GetBool("IsGrabbing"));
     }
 
     /// <summary>
@@ -109,8 +150,12 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player
     {
         Debug.Log("NetworkedPlayer::OnDestroy()");
         PhotonNetwork.Destroy(networkedPlayerHead);
-        PhotonNetwork.Destroy(networkedPlayerLeftHand);
-        PhotonNetwork.Destroy(networkedPlayerRightHand);
+        //PhotonNetwork.Destroy(networkedPlayerLeftHand);
+        //PhotonNetwork.Destroy(networkedPlayerRightHand);
+        for (int i = 0; i < networkedHands.Length; i++)
+        {
+            PhotonNetwork.Destroy(networkedHands[i]);
+        }
     }
 
     /// <summary>
@@ -121,7 +166,11 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player
     {
         Debug.Log("NetworkedPlayer::OnApplicationQuit()");
         PhotonNetwork.Destroy(networkedPlayerHead);
-        PhotonNetwork.Destroy(networkedPlayerLeftHand);
-        PhotonNetwork.Destroy(networkedPlayerRightHand);
+        //PhotonNetwork.Destroy(networkedPlayerLeftHand);
+        //PhotonNetwork.Destroy(networkedPlayerRightHand);
+        for (int i = 0; i < networkedHands.Length; i++)
+        {
+            PhotonNetwork.Destroy(networkedHands[i]);
+        }
     }
 }

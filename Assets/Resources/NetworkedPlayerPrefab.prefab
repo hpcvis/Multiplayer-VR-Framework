@@ -146,20 +146,18 @@ MonoBehaviour:
   allowToggleTo2D: 0
   remotePlayerHeadPrefab: {fileID: 400008532225938788, guid: 89c6026b302a4d8458fa33717f54c84f,
     type: 3}
-  remotePlayerLeftHandPrefab: {fileID: 6346621012592817420, guid: 15fca4c2a2ebb9344ab133872c21f85c,
-    type: 3}
-  remotePlayerRightHandPrefab: {fileID: 8254797532761660324, guid: 45aceeb109c9d974da1e0f4022c48f00,
+  remotePlayerHandPrefab: {fileID: 6346621012592817420, guid: 15fca4c2a2ebb9344ab133872c21f85c,
     type: 3}
   cameraTransform: {fileID: 386762698739375756}
-  leftHandTransform: {fileID: 421856527507122455}
-  rightHandTransform: {fileID: 6097659584862244903}
-  leftHandAnimator: {fileID: 6591691504054698199}
-  rightHandAnimator: {fileID: 2140988679146576505}
+  handTransforms:
+  - {fileID: 421856527507122455}
+  - {fileID: 6097659584862244903}
+  handAnimators:
+  - {fileID: 6591691504054698199}
+  - {fileID: 2140988679146576505}
   networkedPlayerHead: {fileID: 0}
-  networkedPlayerLeftHand: {fileID: 0}
-  networkedPlayerLeftHandAnimator: {fileID: 0}
-  networkedPlayerRightHand: {fileID: 0}
-  networkedPlayerRightHandAnimator: {fileID: 0}
+  networkedHands: []
+  networkedHandAnimators: []
 --- !u!114 &7416653874779373058
 MonoBehaviour:
   m_ObjectHideFlags: 0
