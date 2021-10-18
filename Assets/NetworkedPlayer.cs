@@ -63,10 +63,10 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player
                 networkedHands[i].GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
             }
         }
-        // flip the model of the right hand so it looks like a right hand
-        //Vector3 rightHandScale = handTransforms[1].localScale;
-        //rightHandScale.x *= -1;
-        //handTransforms[1].localScale = rightHandScale; // network side
+        // flip the model of the right hand so it looks like a right hand over the network
+        Vector3 rightHandScale = networkedHands[1].transform.localScale;
+        rightHandScale.x *= -1;
+        networkedHands[1].transform.localScale = rightHandScale;
 
 
         //networkedPlayerLeftHand = PhotonNetwork.Instantiate(
@@ -137,7 +137,6 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player
     {
         networkRepresentation.transform.position = sourceTransform.position;
         networkRepresentation.transform.rotation = sourceTransform.rotation;
-        networkRepresentation.transform.localScale = sourceTransform.localScale;
     }
 
     private void SyncNetworkHandAnimations(Animator networkedHand, Animator sourceHand)
