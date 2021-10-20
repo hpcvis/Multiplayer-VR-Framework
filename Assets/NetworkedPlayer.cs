@@ -103,7 +103,7 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player
         // disable local rendering of the player head to avoid visual issues with shadows
         if (networkedPlayerHead.GetComponent<PhotonView>().IsMine)
         {
-            networkedPlayerHead.SetActive(false);
+            networkedPlayerHead.GetComponent<MeshRenderer>().enabled = false;
         }
 
         // 0 => left hand
