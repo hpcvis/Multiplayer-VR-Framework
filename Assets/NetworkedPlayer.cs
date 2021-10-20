@@ -29,34 +29,7 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player
     /// </summary>
     private void OnEnable()
     {
-        networkedPlayerHead = PhotonNetwork.Instantiate(
-            remotePlayerHeadPrefab.name,
-            cameraTransform.position,
-            cameraTransform.rotation);
-        networkedHands = new GameObject[2];
-        networkedHandAnimators = new Animator[2];
-
-        // 0 => left hand
-        // 1 => right hand
-        for (int i = 0; i < networkedHands.Length; i++)
-        {
-            networkedHands[i] = PhotonNetwork.Instantiate(
-                remotePlayerHandPrefab.name,
-                handTransforms[i].position,
-                handTransforms[i].rotation);
-            networkedHandAnimators[i] = networkedHands[i].GetComponentInChildren<Animator>();
-
-            // disable the mesh of the networked player instance locally, since there are SteamVR hands to render
-            if (networkedHands[i].GetComponent<PhotonView>().IsMine)
-            {
-                networkedHands[i].GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
-            }
-        }
-
-        // flip the model of the right hand so it looks like a right hand over the network
-        Vector3 rightHandScale = networkedHands[1].transform.localScale;
-        rightHandScale.x *= -1.0f;
-        networkedHands[1].transform.localScale = rightHandScale;
+        CreateNetworkedRepresentation();
     }
 
     /// <summary>
@@ -104,11 +77,7 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player
     private void OnDestroy()
     {
         Debug.Log("NetworkedPlayer::OnDestroy()");
-        PhotonNetwork.Destroy(networkedPlayerHead);
-        for (int i = 0; i < networkedHands.Length; i++)
-        {
-            PhotonNetwork.Destroy(networkedHands[i]);
-        }
+        DestroyNetworkedRepresentation();
     }
 
     /// <summary>
@@ -118,6 +87,55 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player
     private void OnApplicationQuit()
     {
         Debug.Log("NetworkedPlayer::OnApplicationQuit()");
+        DestroyNetworkedRepresentation();
+    }
+
+    /// <summary>
+    /// Initializes the networked representations of each object.
+    /// </summary>
+    public void CreateNetworkedRepresentation()
+    {
+        networkedPlayerHead = PhotonNetwork.Instantiate(
+            remotePlayerHeadPrefab.name,
+            cameraTransform.position,
+            cameraTransform.rotation);
+
+        // disable local rendering of the player head to avoid visual issues with shadows
+        if (networkedPlayerHead.GetComponent<PhotonView>().IsMine)
+        {
+            networkedPlayerHead.SetActive(false);
+        }
+
+        // 0 => left hand
+        // 1 => right hand
+        networkedHands = new GameObject[2];
+        networkedHandAnimators = new Animator[2];
+        for (int i = 0; i < networkedHands.Length; i++)
+        {
+            networkedHands[i] = PhotonNetwork.Instantiate(
+                remotePlayerHandPrefab.name,
+                handTransforms[i].position,
+                handTransforms[i].rotation);
+            networkedHandAnimators[i] = networkedHands[i].GetComponentInChildren<Animator>();
+
+            // disable the mesh of the networked player instance locally, since there are SteamVR hands to render
+            if (networkedHands[i].GetComponent<PhotonView>().IsMine)
+            {
+                networkedHands[i].GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
+            }
+        }
+
+        // flip the model of the right hand so it looks like a right hand over the network
+        Vector3 rightHandScale = networkedHands[1].transform.localScale;
+        rightHandScale.x *= -1.0f;
+        networkedHands[1].transform.localScale = rightHandScale;
+    }
+
+    /// <summary>
+    /// Destroys the networked representations of each object.
+    /// </summary>
+    public void DestroyNetworkedRepresentation()
+    {
         PhotonNetwork.Destroy(networkedPlayerHead);
         for (int i = 0; i < networkedHands.Length; i++)
         {
