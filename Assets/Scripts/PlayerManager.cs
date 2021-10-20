@@ -38,9 +38,9 @@ public class PlayerManager : MonoBehaviour
     /// <summary>
     /// Destroy the local player (and its networked representation) when the application suddenly quits (e.g. ALT-F4)
     /// </summary>
-    private void OnApplicationQuit()
-    {
-        if (LocalPlayerInstance)
-            Destroy(LocalPlayerInstance);
-    }
+    //private void OnApplicationQuit()
+    //{
+    //    if (LocalPlayerInstance)
+    //        Destroy(LocalPlayerInstance);
+    //}
 }
