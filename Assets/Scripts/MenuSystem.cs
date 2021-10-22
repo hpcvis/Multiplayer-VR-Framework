@@ -83,14 +83,15 @@ public class MenuSystem : MonoBehaviour
                 break;
 
             case "Teleport":
-                if (PlayerManager.inst.LocalPlayerInstance.GetPhotonView().IsMine) //Teleport the player that selects the button only
+                // this updates the position of the player object, but its the position of the camera that is moved by the trackpad
+                //if (PlayerManager.inst.LocalPlayerInstance.GetPhotonView().IsMine) //Teleport the player that selects the button only
                 {
                     PlayerManager.inst.LocalPlayerInstance.transform.position = new Vector3(-5f, 1.1f, 0f);
                 }
-                else
-                {
-                    Debug.Log("Error: " + PlayerManager.inst.LocalPlayerInstance.GetPhotonView().IsMine + " ");
-                }
+                //else
+                //{
+                //    Debug.Log("Error: " + PlayerManager.inst.LocalPlayerInstance.GetPhotonView().IsMine + " ");
+                //}
                 break;
 
             case "Scene Transition":
