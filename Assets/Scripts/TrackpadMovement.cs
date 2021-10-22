@@ -18,22 +18,15 @@ public class TrackpadMovement : MonoBehaviour
 
     void Start()
     {
-        //if (GetComponentInParent<PhotonView>().IsMine) //Avoid creating multiple action listeners per player joined
-            trackpadPos.AddOnChangeListener(OnTrackpadMovement, hand.handType);//create the action listener
+        trackpadPos.AddOnChangeListener(OnTrackpadMovement, hand.handType); // create the action listener
     }
 
     //Moves this transform in relation to the where you are facing in vr and based off of where you are touching on the trackpad
     private void OnTrackpadMovement(SteamVR_Action_Vector2 fromAction, SteamVR_Input_Sources fromSource, Vector2 axis, Vector2 delta)
     {
-        //Makes sure you aren't moving someone else's body/hands over network
-        //if (GetComponentInParent<PhotonView>().IsMine)
-        {
-            Vector2 touchPos = trackpadPos.GetAxis(hand.handType);
-            float yvalue = transform.localPosition.y;
-            transform.Translate(Vector3.Normalize(new Vector3(touchPos.x, 0, touchPos.y)) * Time.deltaTime * speed, mainCamera);
-            transform.localPosition = new Vector3(transform.localPosition.x, yvalue, transform.localPosition.z);
-        }
-
-
+        Vector2 touchPos = trackpadPos.GetAxis(hand.handType);
+        float yvalue = transform.localPosition.y;
+        transform.Translate(Vector3.Normalize(new Vector3(touchPos.x, 0, touchPos.y)) * Time.deltaTime * speed, mainCamera);
+        transform.localPosition = new Vector3(transform.localPosition.x, yvalue, transform.localPosition.z);
     }
 }
