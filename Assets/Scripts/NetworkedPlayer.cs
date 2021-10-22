@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 /// such as the player's head and hands, and synchronizes the positions and andimations of these components.
 /// </summary>
 
-public class NetworkedPlayer : Valve.VR.InteractionSystem.Player, IOnPreQuit
+public class NetworkedPlayer : Valve.VR.InteractionSystem.Player//, IOnPreQuit
 {
     public GameObject remotePlayerHeadPrefab;
     public GameObject remotePlayerHandPrefab;
@@ -34,7 +34,7 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player, IOnPreQuit
         CreateNetworkedRepresentation();
         SceneManager.sceneLoaded += OnSceneLoaded;
         SceneManager.sceneUnloaded += OnSceneUnloaded;
-        NetMasterCallbacks.onPreQuits.Add(this);
+        //NetMasterCallbacks.onPreQuits.Add(this);
     }
 
     /// <summary>
@@ -109,11 +109,11 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player, IOnPreQuit
         DestroyNetworkedRepresentation();
     }
 
-    public void OnPreQuit()
-    {
-        Debug.Log("NetworkedPlayer::OnPreQuit()");
-        DestroyNetworkedRepresentation();
-    }
+    //public void OnPreQuit()
+    //{
+    //    Debug.Log("NetworkedPlayer::OnPreQuit()");
+    //    DestroyNetworkedRepresentation();
+    //}
 
     /// <summary>
     /// Initializes the networked representations of each object.
