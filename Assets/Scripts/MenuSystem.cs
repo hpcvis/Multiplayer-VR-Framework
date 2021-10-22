@@ -116,23 +116,21 @@ public class MenuSystem : MonoBehaviour
             case "Example Scene":
                 if (!PhotonNetwork.IsMasterClient)
                 { 
-                    Debug.LogError("Can not load new scene if not the master client"); 
+                    Debug.LogError("Can not load new scene if not the master client");
+                    break;
                 }
-                else if (PlayerManager.inst.LocalPlayerInstance.GetPhotonView().IsMine)
-                {
-                    PhotonNetwork.LoadLevel(sceneName);
-                }
+
+                PhotonNetwork.LoadLevel(sceneName);
                 break;
 
             case "Template":
                 if (!PhotonNetwork.IsMasterClient)
                 {
                     Debug.LogError("Can not load new scene if not the master client");
+                    break;
                 }
-                else if (PlayerManager.inst.LocalPlayerInstance.GetPhotonView().IsMine)
-                {
-                    PhotonNetwork.LoadLevel(sceneName);
-                }
+                
+                PhotonNetwork.LoadLevel(sceneName);
                 break;
 
             default:
