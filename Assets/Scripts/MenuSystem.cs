@@ -29,48 +29,20 @@ public class MenuSystem : MonoBehaviour
     {
         switch (name){
             case "Voice":
-                if (VoiceToggle.activeSelf)
-                {
-                    VoiceToggle.SetActive(false);
-                }
-                else
-                {
-                    VoiceToggle.SetActive(true);
-                }
+                VoiceToggle.SetActive(!VoiceToggle.activeSelf);
                 break;
 
             case "STT": //STT stands for Speech-To-Text
-                if (STTToggle.activeSelf)
-                {
-                    STTToggle.SetActive(false);
-                }
-                else
-                {
-                    STTToggle.SetActive(true);
-                }
+                STTToggle.SetActive(!STTToggle.activeSelf);
                 break;
 
             case "Pointer":
                 try
                 {
                     PointerSystem = GameObject.FindGameObjectWithTag("EventCamera").GetComponent<LineRenderer>();
+                    PointerSystem.enabled = !PointerSystem.enabled;
                     PointerBall = PointerSystem.GetComponentInChildren<MeshRenderer>();
-                    if (PointerSystem.enabled)
-                    {
-                        PointerSystem.enabled = false;
-                    }
-                    else
-                    {
-                        PointerSystem.enabled = true;
-                    }
-                    if (PointerBall.enabled)
-                    {
-                        PointerBall.enabled = false;
-                    }
-                    else
-                    {
-                        PointerBall.enabled = true;
-                    }
+                    PointerBall.enabled = !PointerBall.enabled;
                 }
                 catch (Exception)
                 {
