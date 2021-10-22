@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Script that implements an instance of a SteamVR player over the network.
@@ -30,6 +31,8 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player
     private void OnEnable()
     {
         CreateNetworkedRepresentation();
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        SceneManager.sceneUnloaded += OnSceneUnloaded;
     }
 
     /// <summary>
@@ -45,30 +48,18 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player
         }
         for (int i = 0; i < networkedHands.Length; i++)
         {
-            SyncNetworkTransform(networkedHands[i], handTransforms[i]);
-            SyncNetworkHandAnimations(networkedHandAnimators[i], handAnimators[i]);
+            if (networkedHands[i])
+            {
+                SyncNetworkTransform(networkedHands[i], handTransforms[i]);
+                SyncNetworkHandAnimations(networkedHandAnimators[i], handAnimators[i]);
+            }
         }
 
+        // debug
         if (Input.GetKeyDown(KeyCode.K))
         {
             Destroy(this.gameObject);
         }
-    }
-
-    /// <summary>
-    /// Copies transforms of the local player to the network representations.
-    /// </summary>
-    /// <param name="networkRepresentation"></param>
-    /// <param name="sourceTransform"></param>
-    private void SyncNetworkTransform(GameObject networkRepresentation, Transform sourceTransform)
-    {
-        networkRepresentation.transform.position = sourceTransform.position;
-        networkRepresentation.transform.rotation = sourceTransform.rotation;
-    }
-
-    private void SyncNetworkHandAnimations(Animator networkedHand, Animator sourceHand)
-    {
-        networkedHand.SetBool("IsGrabbing", sourceHand.GetBool("IsGrabbing"));
     }
 
     /// <summary>
@@ -87,6 +78,32 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player
     private void OnApplicationQuit()
     {
         Debug.Log("NetworkedPlayer::OnApplicationQuit()");
+        DestroyNetworkedRepresentation();
+    }
+
+    /// <summary>
+    /// Initializes the networked representation of the plate on scene load.
+    /// Necessary, since the player object is a DontDestroyOnLoad object.
+    /// Note: This is not called on game initialization, presumably because the delegates have not been assigned yet.
+    /// </summary>
+    /// <param name="scene">Loaded scene</param>
+    /// <param name="mode">Loaded scene mode</param>
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log("NetworkedPlayer::OnSceneLoaded()");
+        CreateNetworkedRepresentation();
+    }
+
+    /// <summary>
+    /// Destroys the networked representation of the player object on scene unload.
+    /// Necessary, since the player object is a DontDestroyOnLoad object.
+    /// Note: This does not seem to be called when the game is force quit,
+    ///       meaning we still have to deal with zombie network objects
+    /// </summary>
+    /// <param name="current">Current scene name</param>
+    void OnSceneUnloaded(Scene current)
+    {
+        Debug.Log("NetworkedPlayer::OnSceneUnloaded()");
         DestroyNetworkedRepresentation();
     }
 
@@ -141,5 +158,26 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player
         {
             PhotonNetwork.Destroy(networkedHands[i]);
         }
+    }
+
+    /// <summary>
+    /// Copies transforms of the local player to the network representations.
+    /// </summary>
+    /// <param name="networkRepresentation"></param>
+    /// <param name="sourceTransform"></param>
+    private void SyncNetworkTransform(GameObject networkRepresentation, Transform sourceTransform)
+    {
+        networkRepresentation.transform.position = sourceTransform.position;
+        networkRepresentation.transform.rotation = sourceTransform.rotation;
+    }
+
+    /// <summary>
+    /// Copies animation state of the local player's hands to their network representation.
+    /// </summary>
+    /// <param name="networkedHand"></param>
+    /// <param name="sourceHand"></param>
+    private void SyncNetworkHandAnimations(Animator networkedHand, Animator sourceHand)
+    {
+        networkedHand.SetBool("IsGrabbing", sourceHand.GetBool("IsGrabbing"));
     }
 }

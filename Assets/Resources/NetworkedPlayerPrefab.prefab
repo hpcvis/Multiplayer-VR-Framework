@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 8372638070810023737}
   - component: {fileID: -6844044693137306134}
   - component: {fileID: 7416653874779373058}
-  - component: {fileID: 2784630988409507507}
+  - component: {fileID: 328001498477071903}
   m_Layer: 0
   m_Name: NetworkedPlayerPrefab
   m_TagString: Player
@@ -170,7 +170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 050e041e2c8b97d43922b5300ead439c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2784630988409507507
+--- !u!114 &328001498477071903
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -179,19 +179,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 7443694104116701611}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Script: {fileID: 11500000, guid: 5cb8d135eddfb0d43844fe3f6d7ece87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  observableSearch: 2
-  Synchronization: 3
-  OwnershipTransfer: 0
-  ObservedComponents: []
-  viewIdField: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
+  hand: {fileID: 1049082087141560267}
+  mainCamera: {fileID: 386762698739375756}
+  trackpadPos:
+    actionPath: /actions/default/in/Trackpad
+    needsReinit: 0
+  speed: 2
 --- !u!1 &9016591131786878326
 GameObject:
   m_ObjectHideFlags: 0
@@ -685,6 +681,16 @@ PrefabInstance:
       propertyPath: viewIdField
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3720265089218292640, guid: 4d293c8e162f3874b982baadd71153d2,
+        type: 3}
+      propertyPath: mainCamera
+      value: 
+      objectReference: {fileID: 386762698739375756}
+    - target: {fileID: 3720265089218292640, guid: 4d293c8e162f3874b982baadd71153d2,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3859261139836957956, guid: 4d293c8e162f3874b982baadd71153d2,
         type: 3}
       propertyPath: m_IsActive
@@ -780,6 +786,7 @@ PrefabInstance:
     - {fileID: 6291429766450053958, guid: 4d293c8e162f3874b982baadd71153d2, type: 3}
     - {fileID: 5893616864834588641, guid: 4d293c8e162f3874b982baadd71153d2, type: 3}
     - {fileID: 1244988846254409486, guid: 4d293c8e162f3874b982baadd71153d2, type: 3}
+    - {fileID: 3720265089218292640, guid: 4d293c8e162f3874b982baadd71153d2, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 4d293c8e162f3874b982baadd71153d2, type: 3}
 --- !u!114 &1049082087141560267 stripped
 MonoBehaviour:

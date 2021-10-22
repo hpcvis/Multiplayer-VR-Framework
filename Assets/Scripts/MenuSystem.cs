@@ -29,48 +29,20 @@ public class MenuSystem : MonoBehaviour
     {
         switch (name){
             case "Voice":
-                if (VoiceToggle.activeSelf)
-                {
-                    VoiceToggle.SetActive(false);
-                }
-                else
-                {
-                    VoiceToggle.SetActive(true);
-                }
+                VoiceToggle.SetActive(!VoiceToggle.activeSelf);
                 break;
 
             case "STT": //STT stands for Speech-To-Text
-                if (STTToggle.activeSelf)
-                {
-                    STTToggle.SetActive(false);
-                }
-                else
-                {
-                    STTToggle.SetActive(true);
-                }
+                STTToggle.SetActive(!STTToggle.activeSelf);
                 break;
 
             case "Pointer":
                 try
                 {
                     PointerSystem = GameObject.FindGameObjectWithTag("EventCamera").GetComponent<LineRenderer>();
+                    PointerSystem.enabled = !PointerSystem.enabled;
                     PointerBall = PointerSystem.GetComponentInChildren<MeshRenderer>();
-                    if (PointerSystem.enabled)
-                    {
-                        PointerSystem.enabled = false;
-                    }
-                    else
-                    {
-                        PointerSystem.enabled = true;
-                    }
-                    if (PointerBall.enabled)
-                    {
-                        PointerBall.enabled = false;
-                    }
-                    else
-                    {
-                        PointerBall.enabled = true;
-                    }
+                    PointerBall.enabled = !PointerBall.enabled;
                 }
                 catch (Exception)
                 {
@@ -83,14 +55,7 @@ public class MenuSystem : MonoBehaviour
                 break;
 
             case "Teleport":
-                if (PlayerManager.inst.LocalPlayerInstance.GetPhotonView().IsMine) //Teleport the player that selects the button only
-                {
-                    PlayerManager.inst.LocalPlayerInstance.transform.position = new Vector3(-5f, 1.1f, 0f);
-                }
-                else
-                {
-                    Debug.Log("Error: " + PlayerManager.inst.LocalPlayerInstance.GetPhotonView().IsMine + " ");
-                }
+                PlayerManager.inst.LocalPlayerInstance.transform.position = new Vector3(-5f, 1.1f, 0f);
                 break;
 
             case "Scene Transition":
@@ -123,23 +88,21 @@ public class MenuSystem : MonoBehaviour
             case "Example Scene":
                 if (!PhotonNetwork.IsMasterClient)
                 { 
-                    Debug.LogError("Can not load new scene if not the master client"); 
+                    Debug.LogError("Can not load new scene if not the master client");
+                    break;
                 }
-                else if (PlayerManager.inst.LocalPlayerInstance.GetPhotonView().IsMine)
-                {
-                    PhotonNetwork.LoadLevel(sceneName);
-                }
+
+                PhotonNetwork.LoadLevel(sceneName);
                 break;
 
             case "Template":
                 if (!PhotonNetwork.IsMasterClient)
                 {
                     Debug.LogError("Can not load new scene if not the master client");
+                    break;
                 }
-                else if (PlayerManager.inst.LocalPlayerInstance.GetPhotonView().IsMine)
-                {
-                    PhotonNetwork.LoadLevel(sceneName);
-                }
+                
+                PhotonNetwork.LoadLevel(sceneName);
                 break;
 
             default:
