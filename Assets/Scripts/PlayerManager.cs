@@ -43,4 +43,29 @@ public class PlayerManager : MonoBehaviour
     //    if (LocalPlayerInstance)
     //        Destroy(LocalPlayerInstance);
     //}
+
+
+    // weird garbage collecter idea:
+    //public struct PlayerNetworkObjects
+    //{
+    //    public bool playerIsConnected;
+    //    public GameObject[] networkedRepresentations;
+    //}
+
+    //public PlayerNetworkObjects[] networkObjects;
+
+    //// perhaps only run this every few seconds
+    //private void Update()
+    //{
+    //    foreach (PlayerNetworkObjects obj in networkObjects)
+    //    {
+    //        if (!obj.playerIsConnected)
+    //        {
+    //            for (int i = 0; i < obj.networkedRepresentations.Length; i++)
+    //            {
+    //                PhotonNetwork.Destroy(obj.networkedRepresentations[i]);
+    //            }
+    //        }
+    //    }
+    //}
 }
