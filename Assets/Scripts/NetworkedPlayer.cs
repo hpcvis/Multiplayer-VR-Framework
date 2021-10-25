@@ -1,5 +1,4 @@
 ﻿using Photon.Pun;
-using Photon.Pun.Simple;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +10,7 @@ using UnityEngine.SceneManagement;
 /// such as the player's head and hands, and synchronizes the positions and andimations of these components.
 /// </summary>
 
-public class NetworkedPlayer : Valve.VR.InteractionSystem.Player//, IOnPreQuit
+public class NetworkedPlayer : Valve.VR.InteractionSystem.Player
 {
     public GameObject remotePlayerHeadPrefab;
     public GameObject remotePlayerHandPrefab;
@@ -25,16 +24,17 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player//, IOnPreQuit
     public GameObject[] networkedHands;
     public Animator[] networkedHandAnimators;
 
+    #region Callbacks
     /// <summary>
     /// Instantates network representations of the player (head, hands)
     /// Instantiation done here since Awake() and Start() are private members of Valve.VR.InteractionSystem.Player 
     /// </summary>
     private void OnEnable()
     {
+        Debug.Log("autocleanup: " + PhotonNetwork.CurrentRoom.AutoCleanUp);
         CreateNetworkedRepresentation();
         SceneManager.sceneLoaded += OnSceneLoaded;
         SceneManager.sceneUnloaded += OnSceneUnloaded;
-        //NetMasterCallbacks.onPreQuits.Add(this);
     }
 
     /// <summary>
@@ -66,20 +66,13 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player//, IOnPreQuit
 
     /// <summary>
     /// Destroys the networked representations of each object.
+    /// This is *not* called when the application exits, because Photon shuts down in OnApplicationQuit().
+    /// I have tried many things to get these networked objects manually cleaned up, but never got them working.
+    /// The solution to this is to let Photon clean up orphaned objects.
     /// </summary>
     private void OnDestroy()
     {
         Debug.Log("NetworkedPlayer::OnDestroy()");
-        DestroyNetworkedRepresentation();
-    }
-
-    /// <summary>
-    /// Destroys the networked representations of each object in the case that the application quits.
-    /// Needs to be done, since OnDestroy is called after OnApplicationQuit, and Photon is disconnected in OnApplicationQuit
-    /// </summary>
-    private void OnApplicationQuit()
-    {
-        Debug.Log("NetworkedPlayer::OnApplicationQuit()");
         DestroyNetworkedRepresentation();
     }
 
@@ -99,8 +92,6 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player//, IOnPreQuit
     /// <summary>
     /// Destroys the networked representation of the player object on scene unload.
     /// Necessary, since the player object is a DontDestroyOnLoad object.
-    /// Note: This does not seem to be called when the game is force quit,
-    ///       meaning we still have to deal with zombie network objects
     /// </summary>
     /// <param name="current">Current scene name</param>
     void OnSceneUnloaded(Scene current)
@@ -108,13 +99,9 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player//, IOnPreQuit
         Debug.Log("NetworkedPlayer::OnSceneUnloaded()");
         DestroyNetworkedRepresentation();
     }
+    #endregion
 
-    //public void OnPreQuit()
-    //{
-    //    Debug.Log("NetworkedPlayer::OnPreQuit()");
-    //    DestroyNetworkedRepresentation();
-    //}
-
+    #region Helpers
     /// <summary>
     /// Initializes the networked representations of each object.
     /// </summary>
@@ -188,4 +175,5 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player//, IOnPreQuit
     {
         networkedHand.SetBool("IsGrabbing", sourceHand.GetBool("IsGrabbing"));
     }
+    #endregion
 }

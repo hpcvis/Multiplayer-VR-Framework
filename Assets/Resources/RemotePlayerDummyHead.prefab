@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 4872397172913698908}
   - component: {fileID: 2904275709971089709}
   - component: {fileID: 8754357614036854964}
-  - component: {fileID: 296931503092613262}
   m_Layer: 0
   m_Name: RemotePlayerDummyHead
   m_TagString: Untagged
@@ -135,15 +134,3 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
---- !u!114 &296931503092613262
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 400008532225938788}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1589f4630e5d3f4f965247f40aa0bba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

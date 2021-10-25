@@ -34,38 +34,4 @@ public class PlayerManager : MonoBehaviour
     {
         LocalPlayerInstance = localPlayer;
     }
-
-    /// <summary>
-    /// Destroy the local player (and its networked representation) when the application suddenly quits (e.g. ALT-F4)
-    /// </summary>
-    //private void OnApplicationQuit()
-    //{
-    //    if (LocalPlayerInstance)
-    //        Destroy(LocalPlayerInstance);
-    //}
-
-
-    // weird garbage collecter idea:
-    //public struct PlayerNetworkObjects
-    //{
-    //    public bool playerIsConnected;
-    //    public GameObject[] networkedRepresentations;
-    //}
-
-    //public PlayerNetworkObjects[] networkObjects;
-
-    //// perhaps only run this every few seconds
-    //private void Update()
-    //{
-    //    foreach (PlayerNetworkObjects obj in networkObjects)
-    //    {
-    //        if (!obj.playerIsConnected)
-    //        {
-    //            for (int i = 0; i < obj.networkedRepresentations.Length; i++)
-    //            {
-    //                PhotonNetwork.Destroy(obj.networkedRepresentations[i]);
-    //            }
-    //        }
-    //    }
-    //}
 }

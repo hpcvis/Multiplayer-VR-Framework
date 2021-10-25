@@ -70,7 +70,9 @@ public class LaunchServerRooms : MonoBehaviourPunCallbacks
         //This is because sometimes room objects belong to certain players that we want to keep (such as interactable objects)
         RoomOptions roomOptions;
         roomOptions = new RoomOptions();
-        roomOptions.CleanupCacheOnLeave = false; //Or false, depending on if you want to keep objects loaded in after a player leaves
+        // Disabling this flag results in orphan objects (player head, hands) remaining when a player is disconnected
+        // However, enabling this flag results in objects like the red balls to be destroyed when the player disconnects while holding them
+        //roomOptions.CleanupCacheOnLeave = false; //Or false, depending on if you want to keep objects loaded in after a player leaves
 
 
         // #Critical: we failed to join a random room, maybe none exists or they are all full. No worries, we create a new room.
