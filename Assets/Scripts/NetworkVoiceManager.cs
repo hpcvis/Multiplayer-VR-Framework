@@ -38,7 +38,6 @@ public class NetworkVoiceManager : MonoBehaviour
         speaker.OnRemoteVoiceRemoveAction += OnRemoteVoiceRemove;
     }
 
-
     private void OnRemoteVoiceRemove(Speaker speaker)
     {
         if (speaker != null)

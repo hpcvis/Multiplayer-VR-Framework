@@ -19,10 +19,6 @@ public class PlayerManager : MonoBehaviour
         {
             inst = this;
         }
-        //if (this.GetComponent<PhotonView>().IsMine)
-        //{
-        //    PlayerManager.LocalPlayerInstance = this.gameObject;
-        //}
         DontDestroyOnLoad(this.gameObject);
     }
 

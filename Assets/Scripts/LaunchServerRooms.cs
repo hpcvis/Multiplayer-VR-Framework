@@ -57,7 +57,6 @@ public class LaunchServerRooms : MonoBehaviourPunCallbacks
     public override void OnDisconnected(DisconnectCause cause)
     {
         base.OnDisconnected(cause);
-        
         Debug.LogWarningFormat("PUN Basics Tutorial/Launcher: OnDisconnected() was called by PUN with reason {0}", cause);
     }
 
@@ -70,10 +69,9 @@ public class LaunchServerRooms : MonoBehaviourPunCallbacks
         //This is because sometimes room objects belong to certain players that we want to keep (such as interactable objects)
         RoomOptions roomOptions;
         roomOptions = new RoomOptions();
-        // Disabling this flag results in orphan objects (player head, hands) remaining when a player is disconnected
-        // However, enabling this flag results in objects like the red balls to be destroyed when the player disconnects while holding them
-        //roomOptions.CleanupCacheOnLeave = false; //Or false, depending on if you want to keep objects loaded in after a player leaves
-
+        // Disabling the CleanupCacheOnLeave flag results in orphan objects (player head, hands) remaining when a player is disconnected
+        // Whether or not keeping this flag enabled breaks other things is yet to be determined
+        //roomOptions.CleanupCacheOnLeave = false;
 
         // #Critical: we failed to join a random room, maybe none exists or they are all full. No worries, we create a new room.
         PhotonNetwork.CreateRoom(null, roomOptions);
@@ -83,13 +81,11 @@ public class LaunchServerRooms : MonoBehaviourPunCallbacks
     {
         base.OnJoinedRoom();
         Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
-        //gameManager.SetActive(true);
     }
+
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
         base.OnPlayerLeftRoom(otherPlayer);
-        //  PhotonNetwork.DestroyPlayerObjects(otherPlayer); This breaks things! Prefer Quit() below, more information below
-
     }
 
     private void Update()
@@ -102,18 +98,9 @@ public class LaunchServerRooms : MonoBehaviourPunCallbacks
         }
     }
 
-    //This function ensures that we can disable player components over the network before they leave
-    //We do this because OnPlayerLeftRoom, if PhotonNetwork.DestroyPlayerObjects is called, it will break several scripts
-    //This is because player's objects are ambiguous inside of VR, and if a script is being stopped, it will break out of both the correct script, and the script of the other player
+    // Exits the application
     public void Quit()
     {
-        /*
-        foreach (GameObject player in GameObject.FindGameObjectsWithTag("Player"))
-        {
-            if (player.GetComponent<PhotonView>().IsMine)
-                player.GetComponent<Disable>().disableThisPlayer();
-        }
-        */
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else

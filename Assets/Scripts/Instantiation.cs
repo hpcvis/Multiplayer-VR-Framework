@@ -17,7 +17,6 @@ using UnityEngine.SceneManagement;
 //Refer to the Template scene and look at the "PUN Spawns" in the heiarchy to see this script in use
 //
 
-
 public class Instantiation : MonoBehaviourPunCallbacks, IInRoomCallbacks
 {
     //Reference to the main player prefab
@@ -26,7 +25,7 @@ public class Instantiation : MonoBehaviourPunCallbacks, IInRoomCallbacks
 
     //spawnPoints is a container that contains spawn points
     //You can uncomment this code out if you don't want to waste runtime finding the spawnpoints yourself and would rather do it in the editor
-    //public GameObject spawnPoints;
+    //public GameObject[] spawnPoints;
 
     [Tooltip("Select this to be true if there is exactly 1 spawnpoint in your world")]
     public bool oneSpawnPoint = false;
@@ -36,7 +35,6 @@ public class Instantiation : MonoBehaviourPunCallbacks, IInRoomCallbacks
 
     private void Start()
     {
-
         //Checking master client avoid race conditions, as the scene is not loaded in, masterclient returns false when the program is first started
         //This is intended behavior, since we can only spawn in interactable objects when the photon server registers our game
         //And since OnJoinedRoom only gets called once the player joins the photon server, the interactables still will need to be spawned in if there is a scene transition
@@ -45,8 +43,6 @@ public class Instantiation : MonoBehaviourPunCallbacks, IInRoomCallbacks
         {
             MakeSceneInteractables();
         }
-
-        
     }
 
     //OnJoinedRoom gets called locally when that player joins the given room
@@ -55,7 +51,6 @@ public class Instantiation : MonoBehaviourPunCallbacks, IInRoomCallbacks
         Debug.Log("OnJoinedRoom() called");
         base.OnJoinedRoom();
 
-        //   this.photonView.RPC("RPC_CreatePlayer", RpcTarget.All);
         createPlayer();
 
         //This only gets called once when a new player joins the room. This also only happens locally
@@ -110,12 +105,9 @@ public class Instantiation : MonoBehaviourPunCallbacks, IInRoomCallbacks
             //We want to find all spawnpoints, so here's how we do it without doing extra work in the editor
             GameObject[] spawnLocations = GameObject.FindGameObjectsWithTag("SpawnPoint");
 
-
             //We get the index we want to spawn by looking at how many players are - 1 (since it counts yourself), we only want to count other players
             int spawnPointIndex;
-
             spawnPointIndex = PhotonNetwork.CurrentRoom.PlayerCount - 1;
-
             Debug.LogError("Current amount of players in network is: " + spawnPointIndex + " , spawning you in index " + spawnPointIndex);
             
             //this loop ensures that the amount of spawnpoints available doesn't exceed the amount of players
@@ -123,7 +115,6 @@ public class Instantiation : MonoBehaviourPunCallbacks, IInRoomCallbacks
             while (spawnPointIndex > spawnLocations.Length)
                 spawnPointIndex -= spawnLocations.Length;
 
-            
             //This for loop iterates through each spawnpoint until the correct one is found
             foreach (GameObject spawnLocation in spawnLocations)
             {

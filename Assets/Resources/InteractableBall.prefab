@@ -18,7 +18,6 @@ GameObject:
   - component: {fileID: 2435671162162765841}
   - component: {fileID: 3400330755036968488}
   - component: {fileID: 3782380989761158638}
-  - component: {fileID: 5874229357625698403}
   m_Layer: 0
   m_Name: InteractableBall
   m_TagString: Interactable
@@ -275,18 +274,3 @@ MonoBehaviour:
   highlightOnHover: 1
   hideHighlight: []
   hoverPriority: 0
---- !u!114 &5874229357625698403
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 978460341195638889}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86464acef4fbb9d4289f3eb254ef33e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 10
-  targetPos: {x: 0, y: 0, z: 0}
-  isMoving: 0

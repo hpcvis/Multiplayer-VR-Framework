@@ -25,7 +25,6 @@ public class SpawnPointHelper : MonoBehaviour
         GameObject[] spawnpoints;
         spawnpoints = GameObject.FindGameObjectsWithTag("SpawnPoint");
 
-
         //The first error check occurs to make sure you choose a positive number, as an index can't be negative
         //-1 is also the default number, so this is used to make sure you pikced a default number
         if (spawnPointIndex < 0)

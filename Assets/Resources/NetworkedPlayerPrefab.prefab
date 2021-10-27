@@ -155,9 +155,6 @@ MonoBehaviour:
   handAnimators:
   - {fileID: 6591691504054698199}
   - {fileID: 2140988679146576505}
-  networkedPlayerHead: {fileID: 0}
-  networkedHands: []
-  networkedHandAnimators: []
 --- !u!114 &7416653874779373058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -941,7 +938,8 @@ PrefabInstance:
       propertyPath: m_TagString
       value: FallbackPlayer
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5506606011087993417, guid: b10ac8bdc092e95498145fa96074e135, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b10ac8bdc092e95498145fa96074e135, type: 3}
 --- !u!1 &1381660399812165641 stripped
 GameObject:

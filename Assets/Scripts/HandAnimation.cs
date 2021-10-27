@@ -8,19 +8,17 @@ using Valve.VR;
 //This script is attached at each hand
 public class HandAnimation : MonoBehaviour {
 
-    //Reference to the animator of the hadn
+    //Reference to the animator of the hand
     private Animator _anim;
 
     [Tooltip("Insert the given hand that the script is attacehd to, such as Left Hand or Right Hand")]
     public SteamVR_Input_Sources inputSource;
 
-    // Use this for initialization
     void Start ()
     {
         _anim = GetComponentInChildren<Animator>();
 	}
 	
-	// Update is called once per frame
 	void Update ()
     {        
         //Checks to see whether or not you or squeezing the trigger on controller.
@@ -30,7 +28,6 @@ public class HandAnimation : MonoBehaviour {
             {
                 Debug.Log("Is grabbing");
                 _anim.SetBool("IsGrabbing", true);
-
             }
         }
         else

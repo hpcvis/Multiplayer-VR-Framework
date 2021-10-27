@@ -19,12 +19,11 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player
     public Transform[] handTransforms;
     public Animator[] handAnimators;
 
-    // public for debug purposes
-    public GameObject networkedPlayerHead;
-    public GameObject[] networkedHands;
-    public Animator[] networkedHandAnimators;
+    private GameObject networkedPlayerHead;
+    private GameObject[] networkedHands;
+    private Animator[] networkedHandAnimators;
 
-    #region Callbacks
+    #region Unity Callbacks
     /// <summary>
     /// Instantates network representations of the player (head, hands)
     /// Instantiation done here since Awake() and Start() are private members of Valve.VR.InteractionSystem.Player 
@@ -55,12 +54,6 @@ public class NetworkedPlayer : Valve.VR.InteractionSystem.Player
                 SyncNetworkTransform(networkedHands[i], handTransforms[i]);
                 SyncNetworkHandAnimations(networkedHandAnimators[i], handAnimators[i]);
             }
-        }
-
-        // debug
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            Destroy(this.gameObject);
         }
     }
 
